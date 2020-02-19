@@ -17,16 +17,23 @@ program.version('1.0.0', '-v, --version')
             inquirer.prompt([
                 {
                     name: 'description',
-                    message: '请输入项目描述'
+                    message: '请输入项目描述：'
                 },
                 {
                     name: 'author',
-                    message: '请输入作者名称'
+                    message: '请输入作者名称：'
+                },
+                {
+                    name: 'template',
+                    message: '请输入模板类型（pc/mobile）：'
                 }
             ]).then((answers) => {
                 const spinner = ora('正在下载模板...');
                 spinner.start();
-                download('https://github.com:liwudi/vue-mobile-template#master', name, {clone: true}, (err) => {
+                const template_mobile = 'https://github.com:liwudi/vue-mobile-template#master';
+                const template_pc  = 'https://github.com:liwudi/vue-pc-template#master';
+                const TEMPLATE = answers.template === 'pc' ? template_pc : template_mobile;
+                download(TEMPLATE, name, {clone: true}, (err) => {
                     if(err){
                         spinner.fail();
                         console.log(symbols.error, chalk.red(err));
